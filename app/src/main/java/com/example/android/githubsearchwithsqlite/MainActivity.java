@@ -3,9 +3,13 @@ package com.example.android.githubsearchwithsqlite;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -28,12 +32,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements GitHubSearchAdapter.OnSearchResultClickListener, LoaderManager.LoaderCallbacks<String> {
+        implements GitHubSearchAdapter.OnSearchResultClickListener, LoaderManager.LoaderCallbacks<String>,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String SEARCH_URL_KEY = "githubSearchURL";
     private static final int GITHUB_SEARCH_LOADER_ID = 0;
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
     private RecyclerView mSearchResultsRV;
     private EditText mSearchBoxET;
     private ProgressBar mLoadingIndicatorPB;
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mSearchBoxET = (EditText)findViewById(R.id.et_search_box);
         mLoadingIndicatorPB = (ProgressBar)findViewById(R.id.pb_loading_indicator);
         mLoadingErrorMessageTV = (TextView)findViewById(R.id.tv_loading_error_message);
@@ -55,6 +63,14 @@ public class MainActivity extends AppCompatActivity
 
         mGitHubSearchAdapter = new GitHubSearchAdapter(this);
         mSearchResultsRV.setAdapter(mGitHubSearchAdapter);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
         getSupportLoaderManager().initLoader(GITHUB_SEARCH_LOADER_ID, null, this);
 
@@ -68,6 +84,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        NavigationView navigationView = (NavigationView)findViewById(R.id.nv_navigation_drawer);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -78,6 +97,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
@@ -180,5 +202,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(Loader<String> loader) {
         // Nothing to do...
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_search:
+                mDrawerLayout.closeDrawers();
+                return true;
+            case R.id.nav_saved_results:
+                mDrawerLayout.closeDrawers();
+                Intent savedResultsIntent = new Intent(this, SavedSearchResultsActivity.class);
+                startActivity(savedResultsIntent);
+                return true;
+            case R.id.nav_settings:
+                mDrawerLayout.closeDrawers();
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            default:
+                return false;
+        }
     }
 }
