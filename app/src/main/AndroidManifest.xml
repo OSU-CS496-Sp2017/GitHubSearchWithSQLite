@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.githubsearchwithpreferences">
+    package="com.example.android.githubsearchwithsqlite">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.android.githubsearchwithsqlite.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,15 +21,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchResultDetailActivity"
+            android:name="com.example.android.githubsearchwithsqlite.SearchResultDetailActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.android.githubsearchwithsqlite.SettingsActivity"
             android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.android.githubsearchwithsqlite.SavedSearchResultsActivity"
+            android:label="@string/saved_search_results"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

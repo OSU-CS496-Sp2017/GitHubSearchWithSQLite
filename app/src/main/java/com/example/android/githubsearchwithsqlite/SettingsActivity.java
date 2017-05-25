@@ -1,4 +1,4 @@
-package com.example.android.githubsearchwithpreferences;
+package com.example.android.githubsearchwithsqlite;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

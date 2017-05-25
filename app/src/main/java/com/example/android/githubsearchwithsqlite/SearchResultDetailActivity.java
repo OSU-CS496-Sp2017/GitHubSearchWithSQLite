@@ -1,4 +1,4 @@
-package com.example.android.githubsearchwithpreferences;
+package com.example.android.githubsearchwithsqlite;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,21 +7,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.githubsearchwithpreferences.utils.GitHubUtils;
+import com.example.android.githubsearchwithsqlite.utils.GitHubUtils;
 
 public class SearchResultDetailActivity extends AppCompatActivity {
+    private ImageView mSearchResultBookmarkIV;
     private TextView mSearchResultNameTV;
     private TextView mSearchResultDescriptionTV;
     private TextView mSearchResultStarsTV;
     private GitHubUtils.SearchResult mSearchResult;
+    private boolean mIsBookmarked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result_detail);
 
+        mSearchResultBookmarkIV = (ImageView)findViewById(R.id.iv_search_result_bookmark);
         mSearchResultNameTV = (TextView)findViewById(R.id.tv_search_result_name);
         mSearchResultDescriptionTV = (TextView)findViewById(R.id.tv_search_result_description);
         mSearchResultStarsTV = (TextView)findViewById(R.id.tv_search_result_stars);
@@ -33,6 +38,18 @@ public class SearchResultDetailActivity extends AppCompatActivity {
             mSearchResultDescriptionTV.setText(mSearchResult.description);
             mSearchResultStarsTV.setText(Integer.toString(mSearchResult.stars));
         }
+
+        mSearchResultBookmarkIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIsBookmarked = !mIsBookmarked;
+                if (mIsBookmarked) {
+                    mSearchResultBookmarkIV.setImageResource(R.drawable.ic_bookmark_black_48dp);
+                } else {
+                    mSearchResultBookmarkIV.setImageResource(R.drawable.ic_bookmark_border_black_48dp);
+                }
+            }
+        });
     }
 
     @Override

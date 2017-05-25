@@ -1,4 +1,4 @@
-package com.example.android.githubsearchwithpreferences;
+package com.example.android.githubsearchwithsqlite;
 
 import org.junit.Test;
 

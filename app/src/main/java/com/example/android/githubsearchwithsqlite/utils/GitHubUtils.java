@@ -1,4 +1,4 @@
-package com.example.android.githubsearchwithpreferences.utils;
+package com.example.android.githubsearchwithsqlite.utils;
 
 import android.net.Uri;
 import android.text.TextUtils;
