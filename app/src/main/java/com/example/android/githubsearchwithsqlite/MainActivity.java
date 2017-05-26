@@ -2,8 +2,10 @@ package com.example.android.githubsearchwithsqlite;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -70,7 +72,6 @@ public class MainActivity extends AppCompatActivity
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
 
         getSupportLoaderManager().initLoader(GITHUB_SEARCH_LOADER_ID, null, this);
 
@@ -87,6 +88,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView)findViewById(R.id.nv_navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
