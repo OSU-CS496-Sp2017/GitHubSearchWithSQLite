@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/GitHubSearchWithSQLite.iml" filepath="$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/GitHubSearchWithSQLite.iml" />
+      <module fileurl="file://$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/GitHubSearchWithSQLite.iml" filepath="$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/GitHubSearchWithSQLite.iml" />
+      <module fileurl="file://$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/app/app.iml" filepath="$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/app/app.iml" />
       <module fileurl="file://$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/app/app.iml" filepath="$USER_HOME$/Google Drive/courses/cs496/2017_spring/scratch/GitHubSearchWithSQLite/app/app.iml" />
     </modules>
   </component>
