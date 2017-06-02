@@ -2,6 +2,7 @@ package com.example.android.githubsearchwithsqlite;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.ShareCompat;
@@ -45,15 +46,26 @@ public class SearchResultDetailActivity extends AppCompatActivity {
             mSearchResultNameTV.setText(mSearchResult.fullName);
             mSearchResultDescriptionTV.setText(mSearchResult.description);
             mSearchResultStarsTV.setText(Integer.toString(mSearchResult.stars));
+
+            mIsBookmarked = checkSearchResultIsInDB();
+            updateBookmarkIconState();
+            updateStarCountInDB();
         }
 
         mSearchResultBookmarkIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mIsBookmarked = !mIsBookmarked;
+                updateSearchResultInDB();
                 updateBookmarkIconState();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        mDB.close();
+        super.onDestroy();
     }
 
     @Override
@@ -105,6 +117,14 @@ public class SearchResultDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void updateSearchResultInDB() {
+        if (mIsBookmarked) {
+            addSearchResultToDB();
+        } else {
+            deleteSearchResultFromDB();
+        }
+    }
+
     private long addSearchResultToDB() {
         if (mSearchResult != null) {
             ContentValues values = new ContentValues();
@@ -123,6 +143,36 @@ public class SearchResultDetailActivity extends AppCompatActivity {
             String sqlSelection = GitHubSearchContract.FavoriteRepos.COLUMN_FULL_NAME + " = ?";
             String[] sqlSelectionArgs = { mSearchResult.fullName };
             mDB.delete(GitHubSearchContract.FavoriteRepos.TABLE_NAME, sqlSelection, sqlSelectionArgs);
+        }
+    }
+
+    private boolean checkSearchResultIsInDB() {
+        boolean isInDB = false;
+        if (mSearchResult != null) {
+            String sqlSelection = GitHubSearchContract.FavoriteRepos.COLUMN_FULL_NAME + " = ?";
+            String[] sqlSelectionArgs = { mSearchResult.fullName };
+            Cursor cursor = mDB.query(
+                    GitHubSearchContract.FavoriteRepos.TABLE_NAME,
+                    null,
+                    sqlSelection,
+                    sqlSelectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            isInDB = cursor.getCount() > 0;
+            cursor.close();
+        }
+        return isInDB;
+    }
+
+    private void updateStarCountInDB() {
+        if (mSearchResult != null) {
+            String sqlSelection = GitHubSearchContract.FavoriteRepos.COLUMN_FULL_NAME + " = ?";
+            String[] sqlSelectionArgs = { mSearchResult.fullName };
+            ContentValues values = new ContentValues();
+            values.put(GitHubSearchContract.FavoriteRepos.COLUMN_STARS, mSearchResult.stars);
+            mDB.update(GitHubSearchContract.FavoriteRepos.TABLE_NAME, values, sqlSelection, sqlSelectionArgs);
         }
     }
 }
